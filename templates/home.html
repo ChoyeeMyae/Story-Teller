@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Generator</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
+
+</head>
+<body>
+    <div class="container">
+        <h1>Story Generator</h1>
+        <form action="/" method="post">
+            Genre: <input type="text" name="genre" required><br>
+            Reader Age: <input type="number" name="reader_age" required><br>
+            Character Name: <input type="text" name="character_name" required><br>
+            Character Sex: <select name="character_sex" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select><br>
+            <input type="submit" value="Generate Story">
+        </form>
+        {% if story %}
+            <div class="story">
+                <h2>Generated Story:</h2>
+                <p>{{ story | safe }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
