@@ -4,41 +4,35 @@ import os
 
 app = Flask(__name__)
 
-# Define your route for the home page
 @app.route('/', methods=['GET', 'POST'])
 def home():
     story = None
     error = None
-
-    # Check if the form has been submitted
     if request.method == 'POST':
         try:
-            # Extract form data
             genre = request.form['genre']
             reader_age = request.form['reader_age']
-            character_name = request.form['character_name']
-            character_sex = request.form['character_sex']
+            num_characters = int(request.form['num_characters'])
+            character_names = [request.form[f'character_name_{i}'] for i in range(1, num_characters + 1)]
 
-            # Construct the prompt for the AI
-            prompt = construct_prompt(genre, reader_age, character_name, character_sex)
-
-            # Generate the story
+            prompt = construct_prompt(genre, reader_age, character_names)
             story = generate_story(prompt)
             if not story:
                 error = 'Failed to generate story. Please try again later.'
 
         except Exception as e:
-            # Handle exceptions and provide feedback
             error = str(e)
 
-    # Render the home page with the story and any error messages
     return render_template('home.html', story=story, error=error)
 
-def construct_prompt(genre, reader_age, character_name, character_sex):
-    # Create a detailed prompt for the AI
+def construct_prompt(genre, reader_age, character_names):
+    character_descriptions = ''
+    for i, name in enumerate(character_names, start=1):
+        character_descriptions += f"The story should include a character named {name}. "
+    
     return (
         f"Create a short story in the {genre} genre for a reader aged {reader_age}. "
-        f"The story should be engaging and easy to follow, with a protagonist named {character_name} who is {character_sex}. "
+        f"{character_descriptions}"
         f"Include elements typical of the genre and create a conflict that is resolved by the end of the story. "
         f"Keep the language and content appropriate for the intended reader age. The story should start with an attention-grabbing event and maintain a consistent tone throughout.\n\n"
         f"Story:"

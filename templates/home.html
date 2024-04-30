@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Story Teller</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-
-
 </head>
 <body>
     <div class="container">
@@ -14,12 +12,8 @@
         <form action="/" method="post">
             Genre: <input type="text" name="genre" required><br>
             Reader Age: <input type="number" name="reader_age" required><br>
-            Character Name: <input type="text" name="character_name" required><br>
-            Character Sex: <select name="character_sex" required>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-            </select><br>
+            Number of Characters: <input type="number" name="num_characters" id="num_characters" min="1" required><br>
+            <div id="character_details"></div>
             <input type="submit" value="Generate Story">
         </form>
         {% if story %}
@@ -29,5 +23,26 @@
             </div>
         {% endif %}
     </div>
+    <script>
+        document.getElementById('num_characters').addEventListener('change', function() {
+            const number = parseInt(this.value, 10);
+            const characterDetails = document.getElementById('character_details');
+            characterDetails.innerHTML = ''; // Clear previous inputs
+            if (number > 0) {
+                for (let i = 1; i <= number; i++) {
+                    characterDetails.innerHTML += `
+                        <label for="character_name_${i}">Character ${i} Name:</label>
+                        <input type="text" name="character_name_${i}" id="character_name_${i}" required><br>
+                        <label for="character_sex_${i}">Character ${i} Sex:</label>
+                        <select name="character_sex_${i}" id="character_sex_${i}" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select><br>
+                    `;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
