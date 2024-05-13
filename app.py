@@ -17,7 +17,6 @@ def home():
 
             prompt = construct_prompt(genre, reader_age, character_names)
             story = generate_story(prompt)
-            #print(story)
             if not story:
                 error = 'Failed to generate story. Please try again later.'
 
@@ -34,7 +33,7 @@ def construct_prompt(genre, reader_age, character_names):
     return (
         f"Create a short one paragraph story with a conflict or moral in the {genre} genre for a reader aged {reader_age}. \n\n"
         f"{character_descriptions}"
-        ##f"Include elements typical of the genre and create a conflict or moral that is resolved or revealed by the end of the story. "
+        #f"Include elements typical of the genre and create a conflict or moral that is resolved or revealed by the end of the story. "
         #f"Keep the language and content appropriate for the intended reader age. The story should start with an attention-grabbing event and maintain a consistent tone throughout.\n\n"
         f"Story:"
     )
@@ -73,7 +72,7 @@ def generate_story(prompt):
         return result['choices'][0]['text'].strip()
     else:
         # Log the error or handle it as you see fit
-        print("Error requesting response:")
+        print("Error requesting response")
         return None
 
 # Run the Flask app
